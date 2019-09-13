@@ -20,7 +20,20 @@ In this example, the key `ContactForm` is the name of the form you will pass as 
 to the `Form` query in graphql (it's an enum).
 
 The value can take on a number of different implementations. Here,
- `'MyProject\Pages\ContactPageController.ContactForm'` refers to `ControllerName.MethodThatReturnsAForm`.
+ `'MyProject\Pages\ContactPageController.ContactForm'` refers to:
+  
+*ContactPageController.php*
+```php
+namespace MyProject\Pages;
+
+class ContactPageController extends Controller
+{
+    public function ContactForm()
+    {
+        // return Form instance
+    }
+}
+```
  
  You can also use a fully-qualified `Form` subclass:
  
@@ -34,6 +47,23 @@ You can also map it to a method on a `FormFactoryInterface` that is registered w
 ```
 ContactForm: 'myMethod'
 ```
+
+### Usage with Userforms
+
+If you're using `silverstripe/userforms` to generate forms in the CMS, there is a specialised
+form factory bundled with this module to allow you to register these. Because they all share
+the same controller class, you can instead refer to these forms by their link or ID.
+
+```
+MyCMSForm: 'who-we-are/contact-us'
+```
+
+Or, you can use an ID
+
+```
+MyCMSForm: 45
+```
+
 
 ### Form factories
 
@@ -76,10 +106,42 @@ SilverStripe\Core\Injector\Injector:
         myFactory: '%$MyProject\MyFormFactory'
 ```
 
+## Querying
+
+```
+query {
+  Form(name: MyForm) {
+    schema {
+      fields {
+        id
+        name
+        type
+        title
+        # Recursive, for composite fields
+        children {
+          name
+          type
+          title
+        }
+      }
+      actions {
+        name
+        title
+      }
+    }
+  }
+}
+```
+
 ## Caveats
 
 * Methods that generate forms **must be deterministic!** No hiding and showing fields based on state
 (at least not yet).
 * If you're using an explicit instance of a `Form` subclass, it needs to be instantiable through
 `singleton()`. Ensure that any required constructor params are auto-injected.
+* Doesn't do anything fancy like composite fields
+* TODO: mutations, form submissions
+* File uploads? Stop.
+
+
 

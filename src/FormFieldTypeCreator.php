@@ -39,6 +39,8 @@ class FormFieldTypeCreator extends TypeCreator
             'attributes' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
             'data' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
             'autoFocus' => ['type' => Type::boolean()],
+            'children' => ['type' => Type::listOf($this->manager->getType('FormField'))],
+
         ];
     }
 }

@@ -19,3 +19,13 @@ SilverStripe\GraphQL\Manager:
         FieldState: 'UncleCheese\GraphQLForms\FieldStateTypeCreator'
       queries:
         form: 'UncleCheese\GraphQLForms\FormQueryCreator'
+---
+Only:
+  moduleexists: 'silverstripe/userforms'
+---
+SilverStripe\Core\Injector\Injector:
+  UncleCheese\GraphQLForms\FormQueryCreator:
+    properties:
+      factories:
+        userforms: '%$UncleCheese\GraphQLForms\UserDefinedFormFactory'
+

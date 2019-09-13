@@ -9,6 +9,7 @@ use GraphQL\Type\Definition\Type;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Forms\Schema\FormSchema;
 use SilverStripe\GraphQL\QueryCreator;
+use InvalidArgumentException;
 
 class FormQueryCreator extends QueryCreator
 {
