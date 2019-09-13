@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe-module/skeleton",
+    "name": "unclecheese/silverstripe-graphql-forms",
     "description": "A skeleton for SilverStripe modules.",
     "type": "silverstripe-vendormodule",
     "keywords": [
