@@ -1,6 +1,6 @@
 {
     "name": "unclecheese/silverstripe-graphql-forms",
-    "description": "A skeleton for SilverStripe modules.",
+    "description": "A POC for SilverStripe forms in graphql.",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
@@ -17,17 +17,8 @@
     },
     "autoload": {
         "psr-4": {
-            "SilverStripeModule\\Skeleton\\": "src/",
-            "SilverStripeModule\\Skeleton\\Tests\\": "tests/"
+            "UncleCheese\\GraphQLForms\\": "src/"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
-        },
-        "expose": [
-            "client/dist"
-        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
