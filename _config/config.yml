@@ -1,0 +1,21 @@
+---
+Name: graphql-forms
+---
+SilverStripe\Core\Injector\Injector:
+  UncleCheese\GraphQLForms\FormQueryCreator:
+    properties:
+      factories:
+        default: '%$UncleCheese\GraphQLForms\DefaultFormFactory'
+SilverStripe\GraphQL\Manager:
+  schemas:
+    default:
+      types:
+        Form: 'UncleCheese\GraphQLForms\FormTypeCreator'
+        FormState: 'UncleCheese\GraphQLForms\FormStateTypeCreator'
+        FormSchema: 'UncleCheese\GraphQLForms\FormSchemaTypeCreator'
+        FormMessage: 'UncleCheese\GraphQLForms\FormMessageTypeCreator'
+        FormField: 'UncleCheese\GraphQLForms\FormFieldTypeCreator'
+        FormAttribute: 'UncleCheese\GraphQLForms\FormAttributeTypeCreator'
+        FieldState: 'UncleCheese\GraphQLForms\FieldStateTypeCreator'
+      queries:
+        form: 'UncleCheese\GraphQLForms\FormQueryCreator'
