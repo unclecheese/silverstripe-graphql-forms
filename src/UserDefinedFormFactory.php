@@ -11,7 +11,7 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 
 class UserDefinedFormFactory implements FormFactoryInterface
 {
-    public function getFormByName(string $name): ?Form
+    public function getFormByName(string $name): ?FormReference
     {
         $page = null;
         if (is_numeric($name)) {
@@ -29,6 +29,6 @@ class UserDefinedFormFactory implements FormFactoryInterface
 
         $controller = ModelAsController::controller_for($page);
 
-        return $controller->Form();
+        return new FormReference($controller->Form(), $page);
     }
 }

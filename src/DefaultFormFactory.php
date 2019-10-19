@@ -12,7 +12,7 @@ use SilverStripe\ORM\ValidationException;
 
 class DefaultFormFactory implements FormFactoryInterface
 {
-    public function getFormByName(string $name): ?Form
+    public function getFormByName(string $name): ?FormReference
     {
         if (method_exists($this, $name)) {
             $form = $this->$name();
@@ -24,7 +24,7 @@ class DefaultFormFactory implements FormFactoryInterface
                 ));
             }
 
-            return $form;
+            return new FormReference($form);
         }
 
         if ($name instanceof Form) {
@@ -39,7 +39,7 @@ class DefaultFormFactory implements FormFactoryInterface
                 ));
             }
 
-            return $form;
+            return new FormReference($form);
         }
 
         if (strpos($name, '.') !== false) {
@@ -71,7 +71,7 @@ class DefaultFormFactory implements FormFactoryInterface
                 ));
             }
 
-            return $form;
+            return new FormReference($form);
         }
 
         return null;

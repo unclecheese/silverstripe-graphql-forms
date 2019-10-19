@@ -20,12 +20,14 @@ class FormSchemaTypeCreator extends TypeCreator
     public function fields()
     {
         return [
+            'formName' => ['type' => Type::string()],
+            'formPageID' => ['type' => Type::id()],
             'id' => ['type' => Type::string()],
             'name' => ['type' => Type::string()],
             'action' => ['type' => Type::string()],
             'method' => ['type' => HTTPMethodType::singleton()->toType()],
-            'attribtutes' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
-            'data' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
+            'attributes' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
+            'data' => ['type' => Type::string()],
             'fields' => ['type' => Type::listOf($this->manager->getType('FormField'))],
             'actions' => ['type' => Type::listOf($this->manager->getType('FormField'))],
         ];

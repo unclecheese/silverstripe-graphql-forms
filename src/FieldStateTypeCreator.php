@@ -24,7 +24,7 @@ class FieldStateTypeCreator extends TypeCreator
             'id' => ['type' => Type::string()],
             'value' => ['type' => Type::string()],
             'message' => ['type' => Type::string()],
-            'data' => ['type' => Type::listOf($this->manager->getType('FormAttribute'))],
+            'data' => ['type' => Type::string()],
         ];
     }
 }

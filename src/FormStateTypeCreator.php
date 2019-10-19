@@ -20,10 +20,9 @@ class FormStateTypeCreator extends TypeCreator
     public function fields()
     {
         return [
-            'id' => ['type' => Type::string()],
-            'fields' => ['type' => Type::listOf($this->manager->getType('FieldState'))],
+            'id' => ['type' => Type::nonNull(Type::string())],
+            'fields' => ['type' => Type::listOf($this->manager->getType('FormField'))],
             'messages' => ['type' => Type::listOf($this->manager->getType('FormMessage'))],
-            'notifyUnsavedChanges' => ['type' => Type::boolean()],
         ];
     }
 }

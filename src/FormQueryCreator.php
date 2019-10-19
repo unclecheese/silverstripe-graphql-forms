@@ -81,14 +81,19 @@ class FormQueryCreator extends QueryCreator
             ));
         }
         $reference = $forms[$formName];
+        /* @var FormFactoryInterface $factory */
         foreach ($this->factories as $factory) {
-            if ($form = $factory->getFormByName($reference)) {
+            if ($formReference = $factory->getFormByName($reference)) {
                 $schema = FormSchema::create()
                     ->getMultipartSchema(
                         [FormSchema::PART_SCHEMA, FormSchema::PART_STATE],
                         self::SCHEMA_ID,
-                        $form
+                        $formReference->getForm()
                     );
+                $schema['schema']['formName'] = $formName;
+                if ($formReference->getPage()) {
+                    $schema['schema']['formPageID'] = $formReference->getPage()->ID;
+                }
 
                 return static::normalise($schema);
             }
@@ -107,29 +112,69 @@ class FormQueryCreator extends QueryCreator
      */
     private static function normalise(array $schema): array
     {
-        $schema = self::normaliseDataAndAttributes($schema);
-        foreach (['fields', 'actions'] as $key) {
-            foreach ($schema['schema'][$key] as &$fieldData) {
-                $fieldData = self::normaliseDataAndAttributes($fieldData);
-            }
-        }
-        foreach ($schema['state']['fields'] as &$fieldData) {
+        $schema['schema'] = self::normaliseDataAndAttributes($schema['schema']);
+        foreach ($schema['schema']['actions'] as &$fieldData) {
             $fieldData = self::normaliseDataAndAttributes($fieldData);
         }
+
+        $schema['schema']['fields'] = self::removeNullables(
+            self::normaliseFields($schema['schema']['fields'])
+        );
+        $schema['state']['fields'] = self::normaliseFields($schema['state']['fields']);
 
         return $schema;
     }
 
+    /**
+     * @param array $fields
+     * @return array
+     */
+    private static function normaliseFields(array $fields): array
+    {
+        foreach ($fields as &$fieldData) {
+            $validation = $fieldData['validation'] ?? [];
+            $rules = [];
+            foreach ($validation as $rule => $active) {
+                if ($active) {
+                    $rules[] = $rule;
+                }
+            }
+            $fieldData['validation'] = $rules;
+            $fieldData = self::normaliseDataAndAttributes($fieldData);
+            if (!empty($fieldData['children'])) {
+                $fieldData['children'] = self::normaliseFields($fieldData['children']);
+            } else {
+                $fieldData['children'] = [];
+            }
+        }
+
+        return $fields;
+    }
+
+    private static function removeNullables(array $fields): array
+    {
+        $nonNullables = ['description', 'rightTitle', 'leftTitle'];
+        foreach ($fields as &$fieldData) {
+            foreach ($nonNullables as $key) {
+                if ($fieldData[$key] === null) {
+                    $fieldData[$key] = '';
+                }
+            }
+        }
+
+        return $fields;
+    }
     /**
      * @param array $node
      * @return array
      */
     private static function normaliseDataAndAttributes(array $node): array
     {
-        foreach (['data', 'attributes'] as $key) {
-            if (isset($node[$key])) {
-                $node[$key] = self::normaliseMixedArray($node[$key]);
-            }
+        if (isset($node['data'])) {
+            $node['data'] = json_encode($node['data']);
+        }
+        if (isset($node['attributes'])) {
+            $node['attributes'] = self::normaliseMixedArray($node['attributes']);
         }
 
         return $node;
