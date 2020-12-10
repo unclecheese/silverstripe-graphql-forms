@@ -1,0 +1,3 @@
+'form(name: FormNameType!)'
+  type: Form
+  description: Gets a SilverStripe form as structured data (FormSchema)

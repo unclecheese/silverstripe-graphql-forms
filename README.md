@@ -8,12 +8,12 @@ Really simple implementation of `FormSchema` in graphql.
 
 ## Usage
 
-### Register your forms with`FormQueryCreator`.
+### Register your forms in your schema config
 
+*app/_graphql/config.yml
 ```
-UncleCheese\GraphQLForms\FormQueryCreator:
-  registered_forms:
-    ContactForm: 'MyProject\Pages\ContactPageController.ContactForm'
+registeredForms:
+  - 'MyProject\Pages\ContactPageController.ContactForm'
 ```
 
 In this example, the key `ContactForm` is the name of the form you will pass as an argument
@@ -21,7 +21,7 @@ to the `Form` query in graphql (it's an enum).
 
 The value can take on a number of different implementations. Here,
  `'MyProject\Pages\ContactPageController.ContactForm'` refers to:
-  
+
 *ContactPageController.php*
 ```php
 namespace MyProject\Pages;
@@ -34,9 +34,9 @@ class ContactPageController extends Controller
     }
 }
 ```
- 
+
  You can also use a fully-qualified `Form` subclass:
- 
+
  ```
 ContactForm: 'MyProject\Forms\ContactForm'
 ```
@@ -100,7 +100,7 @@ Don't forget to register your form factories!
 
 ```
 SilverStripe\Core\Injector\Injector:
-  UncleCheese\GraphQLForms\FormQueryCreator:
+  UncleCheese\GraphQLForms\FormFactoryRegistry:
     properties:
       factories:
         myFactory: '%$MyProject\MyFormFactory'
@@ -110,7 +110,7 @@ SilverStripe\Core\Injector\Injector:
 
 ```
 query {
-  Form(name: MyForm) {
+  form(name: MyForm) {
     schema {
       fields {
         id

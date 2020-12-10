@@ -6,8 +6,11 @@ namespace UncleCheese\GraphQLForms;
 
 use SilverStripe\CMS\Controllers\ModelAsController;
 use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\Forms\Form;
 use SilverStripe\UserForms\Model\UserDefinedForm;
+
+if (!class_exists(UserDefinedForm::class)) {
+    return;
+}
 
 class UserDefinedFormFactory implements FormFactoryInterface
 {

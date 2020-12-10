@@ -1,0 +1,69 @@
+types:
+  FieldState:
+    description: The state of a field in a SilverStripe form
+    fields:
+      name: String
+      id: String
+      value: String
+      message: String
+      data: String
+  FormAttribute:
+    description: An attribute for a SilverStripe form
+    fields:
+      name: String
+      value: String
+  FormField:
+    description: A SilverStripe form field
+    fields:
+      name: String!
+      id: String!
+      type: String!
+      schemaType: String
+      component: String
+      holderId: String
+      title: String!
+      source: '[FormAttribute]'
+      extraClass: String
+      description: String
+      rightTitle: String
+      leftTitle: String
+      readOnly: Boolean
+      disabled: Boolean
+      customValidationMessage: String
+      validation: '[String]'
+      attributes: '[FormAttribute]'
+      data: String
+      autoFocus: Boolean
+      children: '[FormField]'
+      value: String
+
+  FormMessage:
+    description: A message for a SilverStripe form field
+    fields:
+      value: String
+      type: String
+
+  FormSchema:
+    description: A Silverstripe CMS form
+    fields:
+      formName: String
+      formPageID: ID
+      id: String
+      name: String
+      action: String
+      method: HTTPMethod
+      attributes: '[FormAttribute']
+      data: String
+      fields: '[FormField]'
+      actions: '[FormField]'
+  FormState:
+    description: A representation of Silverstripe CMS form state
+    fields:
+      id: String!
+      fields: '[FormField]'
+      messages: '[FormMessage]'
+  Form:
+    description: A Silverstripe CMS form
+    fields:
+      schema: FormSchema
+      state: FormState
